@@ -4,7 +4,7 @@ const users = [
     {
       id: 1,
       name: "Alice",
-      profilePicture: "https://example.com/images/alice.jpg",
+      profilePicture: "avatar.png",
       status: "Online",
       lastSeen: "2024-11-06T12:34:56Z",
       messages: [
@@ -29,7 +29,7 @@ const users = [
     {
       id: 2,
       name: "Bob",
-      profilePicture: "https://example.com/images/bob.jpg",
+      profilePicture: "avatar.png",
       status: "Offline",
       lastSeen: "2024-11-06T11:45:00Z",
       messages: [
@@ -88,7 +88,7 @@ const users = [
     {
       id: 5,
       name: "jimme",
-      profilePicture: "https://example.com/images/charlie.jpg",
+      profilePicture: "avatar.png",
       status: "Away",
       lastSeen: "2024-11-06T10:20:00Z",
       messages: [
@@ -104,8 +104,8 @@ const users = [
     },
     {
       id: 6,
-      name: "Charlie",
-      profilePicture: "https://example.com/images/charlie.jpg",
+      name: "Favour",
+      profilePicture: "avatar.png",
       status: "Away",
       lastSeen: "2024-11-06T10:20:00Z",
       messages: [
@@ -121,8 +121,8 @@ const users = [
     },
     {
       id: 7,
-      name: "Charlie",
-      profilePicture: "https://example.com/images/charlie.jpg",
+      name: "Twin",
+      profilePicture: "avatar.png",
       status: "Away",
       lastSeen: "2024-11-06T10:20:00Z",
       messages: [
@@ -138,7 +138,7 @@ const users = [
     },
     {
       id: 8,
-      name: "Charlie",
+      name: "Esther",
       profilePicture: "avatar.png",
       status: "Away",
       lastSeen: "2024-11-06T10:20:00Z",
@@ -155,7 +155,7 @@ const users = [
     },
     {
       id: 9,
-      name: "Charlie",
+      name: "Bashir",
       profilePicture: "avatar.png",
       status: "Away",
       lastSeen: "2024-11-06T10:20:00Z",
@@ -176,7 +176,7 @@ const users = [
 function ChatList(){
     const [add, setAdd] = useState(false);
     return(
-        <div className="chatlist">
+        <div className="chatlist flex-1 overflow-y-scroll no-scroll">
             <div className="addUser flex items-center gap-2 p-4">
                 <div className="search flex items-center flex-1 bg-[#36454f] px-2 py-1 gap-2 rounded-[5px]">
                     <img 
@@ -208,8 +208,10 @@ function ChatList(){
                         alt="user profile" 
                     />
                     <div className="text">
-                        <h3>Edimalo</h3>
-                        <p className='text-[12px] text-[#e5e4e2]'>Lorem ipsum dolor sit amet</p>
+                        <h3>{user.name}</h3>
+                        {user.messages.map((message, i) =>(
+                            <p key={i} className='text-[12px] text-[#e5e4e2]'>{message.content}</p>
+                        ))}
                     </div>
                 </li>
                 ))}
