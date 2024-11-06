@@ -52,9 +52,111 @@ const users = [
       ]
     },
     {
-      id: 3,
+      id: 4,
+      name: "Edimalo",
+      profilePicture: "avatar.png",
+      status: "Away",
+      lastSeen: "2024-11-06T10:20:00Z",
+      messages: [
+        { 
+          id: 105, 
+          senderId: 3, 
+          receiverId: 1, 
+          content: "Don't forget the meeting at 3 PM.", 
+          timestamp: "2024-11-06T09:15:00Z", 
+          read: false 
+        },
+      ]
+    },
+    {
+      id: 5,
+      name: "Ayo isreal",
+      profilePicture: "avatar.png",
+      status: "Away",
+      lastSeen: "2024-11-06T10:20:00Z",
+      messages: [
+        { 
+          id: 105, 
+          senderId: 3, 
+          receiverId: 1, 
+          content: "Don't forget the meeting at 3 PM.", 
+          timestamp: "2024-11-06T09:15:00Z", 
+          read: false 
+        },
+      ]
+    },
+    {
+      id: 5,
+      name: "jimme",
+      profilePicture: "https://example.com/images/charlie.jpg",
+      status: "Away",
+      lastSeen: "2024-11-06T10:20:00Z",
+      messages: [
+        { 
+          id: 105, 
+          senderId: 3, 
+          receiverId: 1, 
+          content: "Don't forget the meeting at 3 PM.", 
+          timestamp: "2024-11-06T09:15:00Z", 
+          read: false 
+        },
+      ]
+    },
+    {
+      id: 6,
       name: "Charlie",
       profilePicture: "https://example.com/images/charlie.jpg",
+      status: "Away",
+      lastSeen: "2024-11-06T10:20:00Z",
+      messages: [
+        { 
+          id: 105, 
+          senderId: 3, 
+          receiverId: 1, 
+          content: "Don't forget the meeting at 3 PM.", 
+          timestamp: "2024-11-06T09:15:00Z", 
+          read: false 
+        },
+      ]
+    },
+    {
+      id: 7,
+      name: "Charlie",
+      profilePicture: "https://example.com/images/charlie.jpg",
+      status: "Away",
+      lastSeen: "2024-11-06T10:20:00Z",
+      messages: [
+        { 
+          id: 105, 
+          senderId: 3, 
+          receiverId: 1, 
+          content: "Don't forget the meeting at 3 PM.", 
+          timestamp: "2024-11-06T09:15:00Z", 
+          read: false 
+        },
+      ]
+    },
+    {
+      id: 8,
+      name: "Charlie",
+      profilePicture: "avatar.png",
+      status: "Away",
+      lastSeen: "2024-11-06T10:20:00Z",
+      messages: [
+        { 
+          id: 105, 
+          senderId: 3, 
+          receiverId: 1, 
+          content: "Don't forget the meeting at 3 PM.", 
+          timestamp: "2024-11-06T09:15:00Z", 
+          read: false 
+        },
+      ]
+    },
+    {
+      id: 9,
+      name: "Charlie",
+      profilePicture: "avatar.png",
       status: "Away",
       lastSeen: "2024-11-06T10:20:00Z",
       messages: [
@@ -97,17 +199,20 @@ function ChatList(){
                 </div>
             </div>
             <ul className="userChat">
-                <li className="chatInfo flex p-4 gap-2 border-[#36454f] border-b-2">
+                {users.map((user, index) => (
+
+                <li key={index} className="chatInfo flex p-4 gap-2 border-[#36454f] border-b-2">
                     <img
                         className="border-2 border-white w-12 h-12 rounded-full object-fit"
-                        src="avatar.png"
-                        alt="" 
+                        src={user ? user.profilePicture : "avatar.png"}
+                        alt="user profile" 
                     />
                     <div className="text">
                         <h3>Edimalo</h3>
                         <p className='text-[12px] text-[#e5e4e2]'>Lorem ipsum dolor sit amet</p>
                     </div>
                 </li>
+                ))}
             </ul>
         </div>
     )
