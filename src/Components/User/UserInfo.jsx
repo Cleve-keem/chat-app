@@ -12,7 +12,6 @@ function UserInfo(){
                 <img className="w-14 rounded-full border border-2 border-white object-cover" src="avatar.png" alt="user avatar" />
                 <h4>John Doe</h4>
             </div>
-
             {/* <div className="icons"> */}
             <ul className="flex gap-3">
                 {UserIcons.map((UserIcon, index) => (
@@ -23,7 +22,6 @@ function UserInfo(){
                     </li>
                 ))}
             </ul>
-            {/* </div> */}
         </div>
     )
 }
