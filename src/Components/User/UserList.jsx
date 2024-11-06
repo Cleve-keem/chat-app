@@ -1,7 +1,9 @@
+import UserInfo from "./UserInfo";
+
 function List (){
     return (
-        <div className="list flex-1 border border-r-2 border-black">
-            UserList
+        <div className="list flex-1 border border-r-black">
+            <UserInfo />
         </div>
     )
 }
