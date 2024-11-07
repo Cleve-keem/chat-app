@@ -5,11 +5,7 @@ module.exports = {
     extend: {
       flex: {
         2: '2 1 0%',
-        3: '3 1 0%',
       },
-      backdropFilter: {
-        
-      }
     },
   },
   plugins: [],

@@ -176,15 +176,15 @@ const users = [
 function ChatList(){
     const [add, setAdd] = useState(false);
     return(
-        <div className="chatlist flex-1 overflow-y-scroll no-scroll">
-            <div className="addUser flex items-center gap-2 p-4">
+        <div className="chatlist flex-1 overflow-y-scroll overflow-x-hidden no-scrollbar">
+            <div className="addUser flex items-center gap-4 p-4">
                 <div className="search flex items-center flex-1 bg-[#36454f] px-2 py-1 gap-2 rounded-[5px]">
                     <img 
                         className="w-4 h-4 object-fit" 
                         src="search.png" 
                         alt="search icon" />
                     <input
-                        className="flex-1 bg-inherit outline-none placeholder:italic" 
+                        className="flex-1 w-full bg-inherit outline-none placeholder:italic" 
                         type="text"
                         placeholder="search..." 
                     />
@@ -192,7 +192,7 @@ function ChatList(){
                 <div className="addIcon bg-[#36454f] p-1 rounded-[5px]">
                     <img 
                         className="w-5 p-1"
-                        src={add? "minus.png" : "plus.png"}
+                        src={add ? "minus.png" : "plus.png"}
                         alt="plus icon"
                         onClick={()=>setAdd(!add)}
                     />
@@ -201,16 +201,16 @@ function ChatList(){
             <ul className="userChat">
                 {users.map((user, index) => (
 
-                <li key={index} className="chatInfo flex p-4 gap-2 border-[#36454f] border-b-2">
+                <li key={index} className="chatInfo flex flex-1 items-center p-4 gap-2 border-[#36454f] border-b-2">
                     <img
                         className="border-2 border-white w-12 h-12 rounded-full object-fit"
                         src={user ? user.profilePicture : "avatar.png"}
                         alt="user profile" 
                     />
-                    <div className="text">
-                        <h3>{user.name}</h3>
-                        {user.messages.map((message, i) =>(
-                            <p key={i} className='text-[12px] text-[#e5e4e2]'>{message.content}</p>
+                    <div className="texts flex flex-col">
+                        <span className='text-[14px]'>{user.name}</span>
+                        {user.messages.map((message, i) => (
+                            <p key={i} className='text-[11px] text-[#e5e4e2]'>{message.content}</p>
                         ))}
                     </div>
                 </li>

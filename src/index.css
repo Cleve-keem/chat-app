@@ -9,3 +9,9 @@ body{
   height: 100vh;
   color: white;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Edge */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+}

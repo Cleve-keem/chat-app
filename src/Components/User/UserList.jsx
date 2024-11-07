@@ -3,7 +3,7 @@ import ChatList from "./ChatList";
 
 function List (){
     return (
-        <div className="list flex flex-col flex-1 border-r-[#]">
+        <div className="list flex flex-col flex-1">
             <UserInfo />
             <ChatList />
         </div>
