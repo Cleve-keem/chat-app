@@ -15,3 +15,8 @@ body{
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none;
 }
+
+.own{
+  align-self: end;
+  background-color: #36454f;
+}

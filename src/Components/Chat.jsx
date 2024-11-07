@@ -22,7 +22,7 @@ function Chat(){
     }
     
     return (
-        <div className="chat flex-2 h-full border border-[#36454f]">
+        <div className="chat flex flex-col flex-2 border border-[#36454f]">
             <div className="top flex items-center justify-between p-4 border-b-2 border-[#36454f]">
                 <div className="user flex items-center gap-4">
                     <img className="w-14 rounded-full border-2 border-white object-cover" src="avatar.png" alt="user avatar" />
@@ -33,8 +33,37 @@ function Chat(){
                 </div>
                 <IconList icons={topIcons} />
             </div>
-            <div className="center">Center</div>
-            <div className="bottom relative flex items-center justify-between border-t-2 border-[#36454f] gap-2 p-4 m-auto">
+            
+            {/* The cneter section of the chat */}
+            <div className="center p-4 flex flex-col overflow-y-scroll no-scrollbar gap-3">
+                <div className="text w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
+                    <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</div>
+                    <div>1 mins ago</div>
+                </div>
+                <div className="text own w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</p>
+                    <span>1 mins ago</span>
+                </div>
+                <div className="text w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</p>
+                    <span>1 mins ago</span>
+                </div>
+                <div className="text w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
+                    <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</div>
+                    <div>1 mins ago</div>
+                </div>
+                <div className="text own w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</p>
+                    <span>1 mins ago</span>
+                </div>
+                <div className="text w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</p>
+                    <span>1 mins ago</span>
+                </div>
+            </div>
+
+            {/* bottom section of the chat app */}
+            <div className="bottom flex items-center justify-between border-t-2 border-[#36454f] gap-2 p-4 mt-auto">
                 <IconList icons={bottomLeftIcons} />
                 <input 
                     type="text"
