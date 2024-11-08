@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 function Login(){
     return(
@@ -14,9 +15,9 @@ function Login(){
                     <input type="password" id="password" name="password" placeholder="password"/>
                 </div>
                 <button className="bg-blue-600 w-full">Login</button>
-                <p>Don't have an account? <a href="" className="underline text-blue-700 ml-1">Sign Up</a></p>
+                <p>Don't have an account? <Link to='signup' className="underline text-blue-700 ml-1">Sign Up</Link></p>
             </div>
         </div>
     )
 }
-export default Login
+export default Login;

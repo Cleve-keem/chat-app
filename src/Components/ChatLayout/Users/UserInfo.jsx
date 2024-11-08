@@ -1,7 +1,7 @@
-import moreIcon from "../../../public/more.png";
-import videoIcon from "../../../public/video.png";
-import editIcon from "../../../public/edit.png";
-import IconList from "../Reuseable/IconList";
+import moreIcon from "../../../../public/more.png";
+import videoIcon from "../../../../public/video.png";
+import editIcon from "../../../../public/edit.png";
+import IconList from "../../Reuseable/IconList";
 
 const UserIcons = [moreIcon, videoIcon, editIcon];
 
