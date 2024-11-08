@@ -17,6 +17,22 @@ body{
 }
 
 .own{
-  align-self: end;
-  background-color: #36454f;
+  align-self: flex-end;
+  
+}
+.own p{
+  background-color: #2563eb;
+}
+
+.texts img{
+  border-radius: 5px;
+  margin-bottom: 5px;
+  object-fit: cover;
+}
+
+button{
+  border: none;
+  outline: none;
+  padding: 0.5rem;
+  border-radius: 5px;
 }

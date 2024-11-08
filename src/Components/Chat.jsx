@@ -1,20 +1,28 @@
 import phoneIcon from "../../public/phone.png";
 import micIcon from "../../public/mic.png";
+import infoIcon from "../../public/info.png";
 import videoIcon from "../../public/video.png";
 import IconList from "./Reuseable/IconList";
 import pictureIcon from "../../public/img.png";
 import cameraIcon from "../../public/camera.png";
 import emoji from "../../public/emoji.png";
 import EmojiPicker from "emoji-picker-react";
-import { useState } from "react";
+import avatar from "../../public/avatar.png";
+import { useEffect, useRef, useState } from "react";
 
-const topIcons = [phoneIcon, videoIcon, micIcon];
+const topIcons = [phoneIcon, videoIcon, infoIcon];
 const bottomLeftIcons = [pictureIcon, cameraIcon, micIcon];
 const bottomRightIcons = [emoji]
 
 function Chat(){
     const [open, setOpen] = useState(false);
     const [value, setvalue] = useState("");
+
+    const endRef = useRef(null);
+
+    useEffect(()=>{
+        endRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [])
     
     const handleEmoji = (e) =>{
         setvalue((prev) => prev + e.emoji);
@@ -36,30 +44,73 @@ function Chat(){
             
             {/* The cneter section of the chat */}
             <div className="center p-4 flex flex-col overflow-y-scroll no-scrollbar gap-3">
-                <div className="text w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
-                    <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</div>
-                    <div>1 mins ago</div>
+                <div className="message max-w-[70%] flex gap-2">
+                    <img className="w-10 h-10 rounded-full object-cover border border-white" src={avatar} alt="avatar" />
+                    <div className="texts">
+                        <p className="bg-slate-500 p-3 rounded-[10px]">Hi favour 🤪</p>
+                        <span>1 mins ago</span>
+                    </div>
                 </div>
-                <div className="text own w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</p>
-                    <span>1 mins ago</span>
+                <div className="message own max-w-[70%] flex gap-2">
+                    <div className="texts">
+                        <p className="p-3 rounded-[10px]">Hello Ayo Israel</p>
+                        <span>1 mins ago</span>
+                    </div>
                 </div>
-                <div className="text w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</p>
-                    <span>1 mins ago</span>
+                <div className="message max-w-[70%] flex gap-2">
+                    <img className="w-10 h-10 rounded-full object-cover border border-white" src={avatar} alt="avatar" />
+                    <div className="texts">
+                        <p className="bg-slate-500 p-3 rounded-[10px]">What's up?</p>
+                        <span>1 mins ago</span>
+                    </div>
                 </div>
-                <div className="text w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
-                    <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</div>
-                    <div>1 mins ago</div>
+                <div className="message own max-w-[70%] flex gap-2">
+                    <div className="texts">
+                        <p className="bg-own p-3 rounded-[10px]">I am fine thank you, how are you doing today?</p>
+                        <span>1 mins ago</span>
+                    </div>
                 </div>
-                <div className="text own w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</p>
-                    <span>1 mins ago</span>
+                <div className="message max-w-[70%] flex gap-2">
+                    <img className="w-10 h-10 rounded-full object-cover border border-white" src={avatar} alt="avatar" />
+                    <div className="texts">
+                        <p className="bg-slate-500 p-3 rounded-[10px]">I am doing great. I believe you are good as well</p>
+                        <span>2 mins ago</span>
+                    </div>
                 </div>
-                <div className="text w-[300px] bg-blue-900 p-3 rounded-[10px] flex flex-col gap-2">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati ipsam cum quaerat voluptates natus.</p>
-                    <span>1 mins ago</span>
+                <div className="message own max-w-[70%] flex gap-2">
+                    <div className="texts">
+                        <p className="bg-slate-500 p-3 rounded-[10px]">Sure i am doing alright o. There is something i need to show you. A picture</p>
+                        <span>2 mins ago</span>
+                    </div>
                 </div>
+                <div className="message max-w-[70%] flex gap-2">
+                    <img className="w-10 h-10 rounded-full object-cover border border-white" src={avatar} alt="avatar" />
+                    <div className="texts">
+                        <p className="bg-slate-500 p-3 rounded-[10px]">Okay send it over let me see</p>
+                        <span>2 mins ago</span>
+                    </div>
+                </div>
+                <div className="message own max-w-[70%] flex gap-2">
+                    <div className="texts">
+                        <img src="image.jpg" alt="" />
+                        <p className="p-3 rounded-[10px]">It's a picture i took with my phone few mins ago. What do you think?</p>
+                        <span>3 mins ago</span>
+                    </div>
+                </div>
+                <div className="message max-w-[70%] flex gap-2">
+                    <img className="w-10 h-10 rounded-full object-cover border border-white" src={avatar} alt="avatar" />
+                    <div className="texts">
+                        <p className="bg-slate-500 p-3 rounded-[10px]">It is great. I love it. i will save it.</p>
+                        <span>3 mins ago</span>
+                    </div>
+                </div>
+                <div className="message own max-w-[70%] flex gap-2">
+                    <div className="texts">
+                        <p className="p-3 rounded-[10px]">Thank you. Okay then. i will let you know anytime i take a new photo.</p>
+                        <span>3 mins ago</span>
+                    </div>
+                </div>
+                <div ref={endRef}></div>
             </div>
 
             {/* bottom section of the chat app */}
@@ -83,7 +134,7 @@ function Chat(){
                         <EmojiPicker open={open} onEmojiClick={handleEmoji}/>
                     </div>
                 </div>
-                <button className="border-none outline-none bg-blue-600 p-2 rounded-[4px]">Send</button>
+                <button className="bg-blue-600">Send</button>
             </div>
         </div>
     )
