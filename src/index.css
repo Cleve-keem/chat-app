@@ -37,7 +37,7 @@ button{
   border-radius: 5px;
 }
 
-.login input{
+.item input{
   width: 100%;
   background: #36454f;
   padding: 0.5rem;
@@ -45,4 +45,13 @@ button{
   border: none;
   outline: none;
   color: #fff;
+}
+
+.ads h1{
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.ads p{
+  font-size: ;
 }

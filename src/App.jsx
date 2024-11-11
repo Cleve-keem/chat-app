@@ -1,7 +1,7 @@
 import Chat from './Components/ChatLayout/Chat';
 import Details from './Components/ChatLayout/Details';
 import UserList from './Components/ChatLayout/Users/UserList';
-import SharedLayout from './Components/ChatLayout/SharedLayout';
+import Auth from './Components/Auth';
 
 function App() {
   const user = false;
@@ -16,7 +16,7 @@ function App() {
             <Details />
         
           </>
-        ) : (<SharedLayout/>)
+        ) : (<Auth/>)
       }
     </div>
   )
