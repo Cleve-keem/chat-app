@@ -1,18 +1,49 @@
 import { toast } from 'react-toastify';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
+import { auth, db } from '../../lib/firebase';
+import { LoadingContext } from './LoadingContext';
+import { useContext } from 'react';
 
 function SignUp({ onClick }){
+    const { isLoading, setIsLoading } = useContext(LoadingContext);
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         const formData = new FormData(e.target);
         // const data = Object.fromEntries(formData);
         const { firstName, lastName, email, password } = Object.fromEntries(formData);
-                
-        toast.success("Account created!", {
-            position: "top-center",
-            theme: 'dark'
-        });
+
+        try{
+            const res = await createUserWithEmailAndPassword(auth, email, password); // creating an auth user
+
+            // creating user in the database
+            await setDoc(doc(db, "users", res.user.uid), {
+                firstName,
+                lastName,
+                email,
+                password,
+                id: res.user.uid,
+                block: []
+            });
+            await setDoc(doc(db, "userchats", res.user.uid), {
+                chats: []
+            });
+
+            toast.success("Account created!", {
+                position: "top-center",
+                theme: 'dark'
+            });
+        }
+        catch(error){
+            console.error(error)
+            toast.error(error.message);
+        }
+        // finally{
+        //    
+        // }         
     }
 
     return(
@@ -37,7 +68,7 @@ function SignUp({ onClick }){
                         <input type="email" id="email" name="email" placeholder="Email"/>
                         <input type="password" id="pwd" name="password" placeholder="Password"/>
                     </div>
-                    <button type='submit' className="bg-blue-600 w-full">Sign Up</button>
+                    <button type='submit' disabled={isLoading} className="bg-blue-600 w-full">Sign Up</button>
                 </form>
                 <p>Already have an account? <span onClick={onClick} className="underline text-blue-700 ml-1 cursor-pointer">Login</span></p>
             </div>

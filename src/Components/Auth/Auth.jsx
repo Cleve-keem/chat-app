@@ -17,7 +17,7 @@ function Auth(){
 
     return(
         <div className="auth flex w-full items-center justify-center">
-            {ownAcc? <Login onClick={goToSignUp}/> : <SignUp onClick={goToLogin}/>}
+            {ownAcc? <Login onClick={goToSignUp} /> : <SignUp onClick={goToLogin}/>}
         </div>
     )
 }
