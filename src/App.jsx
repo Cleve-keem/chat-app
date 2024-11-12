@@ -1,13 +1,14 @@
 import Chat from './Components/ChatLayout/Chat';
 import Details from './Components/ChatLayout/Details';
 import UserList from './Components/ChatLayout/Users/UserList';
-import Auth from './Components/Auth';
+import Auth from './Components/Auth/Auth';
+import Notification from './Components/ReuseComp/Notification';
 
 function App() {
   const user = false;
   
   return (
-    <div className="w-[100vw] h-[100vh] md:w-[90vw] md:h-[90vh] bg-slate-900 flex rounded-xl overflow-hidden">
+    <div className="w-[90vw] h-[90vh] bg-slate-900 flex rounded-xl overflow-hidden">
       {
         user ? (
           <>
@@ -18,6 +19,7 @@ function App() {
           </>
         ) : (<Auth/>)
       }
+      <Notification />
     </div>
   )
 }

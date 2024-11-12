@@ -2,12 +2,12 @@ import phoneIcon from "../../../public/phone.png";
 import micIcon from "../../../public/mic.png";
 import infoIcon from "../../../public/info.png";
 import videoIcon from "../../../public/video.png";
-import IconList from "../ReuseComp/IconList";
 import pictureIcon from "../../../public/img.png";
 import cameraIcon from "../../../public/camera.png";
 import emoji from "../../../public/emoji.png";
 import EmojiPicker from "emoji-picker-react";
 import avatar from "../../../public/avatar.png";
+import IconList from "../ReuseComp/IconList";
 import { useEffect, useRef, useState } from "react";
 
 const topIcons = [phoneIcon, videoIcon, infoIcon];

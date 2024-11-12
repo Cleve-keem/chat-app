@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Login from './Auth';
-import SignUp from './Auth';
+import Login from './Login';
+import SignUp from './SignUp';
 
 function Auth(){
     const [ownAcc, setOwnAcc ] = useState(true);
