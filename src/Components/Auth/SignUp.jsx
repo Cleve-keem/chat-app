@@ -2,9 +2,17 @@ import { toast } from 'react-toastify';
 
 function SignUp({ onClick }){
 
-    const handleSignUp = (e) => {
+    const handleRegister = (e) => {
         e.preventDefault();
-        toast.success("Account created!");
+
+        const formData = new FormData(e.target);
+        // const data = Object.fromEntries(formData);
+        const { firstName, lastName, email, password } = Object.fromEntries(formData);
+                
+        toast.success("Account created!", {
+            position: "top-center",
+            theme: 'dark'
+        });
     }
 
     return(
@@ -15,22 +23,22 @@ function SignUp({ onClick }){
             </div>
             <div className="item flex flex-col items-center gap-6">
                 <h1 className="text-2xl font-bold">Create new account</h1>
-                <form onSubmit={handleSignUp}>
+                <form onSubmit={handleRegister} className='w-full flex flex-col gap-4'>
                     <div className="inputs w-full flex flex-col gap-3">
                         <div className="name flex gap-2">
                             <input
                                 type="text" 
                                 id="fname" 
-                                name="fname" 
+                                name="firstName" 
                                 placeholder="First name"
                             />
-                            <input type="text" id="lname" name="lname" placeholder="Last name"/>
+                            <input type="text" id="lname" name="lastName" placeholder="Last name"/>
                         </div>
                         <input type="email" id="email" name="email" placeholder="Email"/>
-                        <input type="password" id="pwd" name="pwd" placeholder="Password"/>
+                        <input type="password" id="pwd" name="password" placeholder="Password"/>
                     </div>
+                    <button type='submit' className="bg-blue-600 w-full">Sign Up</button>
                 </form>
-                <button className="bg-blue-600 w-full">Sign Up</button>
                 <p>Already have an account? <span onClick={onClick} className="underline text-blue-700 ml-1 cursor-pointer">Login</span></p>
             </div>
         </div>
