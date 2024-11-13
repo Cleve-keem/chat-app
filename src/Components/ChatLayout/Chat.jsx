@@ -9,6 +9,7 @@ import EmojiPicker from "emoji-picker-react";
 import avatar from "../../../public/avatar.png";
 import IconList from "../ReuseComp/IconList";
 import { useEffect, useRef, useState } from "react";
+import useUserStore from "../../lib/Store/useUserStore";
 
 const topIcons = [phoneIcon, videoIcon, infoIcon];
 const bottomLeftIcons = [pictureIcon, cameraIcon, micIcon];
@@ -17,6 +18,8 @@ const bottomRightIcons = [emoji]
 function Chat(){
     const [open, setOpen] = useState(false);
     const [value, setvalue] = useState("");
+
+    const {currentUser} = useUserStore();
 
     const endRef = useRef(null);
 
@@ -35,7 +38,7 @@ function Chat(){
                 <div className="user flex items-center gap-4">
                     <img className="w-14 rounded-full border-2 border-white object-cover" src="avatar.png" alt="user avatar" />
                     <div className="texts">
-                        <h4>John Doe</h4>
+                        <h4>{currentUser.username}</h4>
                         <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</small>
                     </div>
                 </div>
@@ -134,7 +137,7 @@ function Chat(){
                         <EmojiPicker open={open} onEmojiClick={handleEmoji}/>
                     </div>
                 </div>
-                <button className="bg-blue-600">Send</button>
+                <button className="bg-blue-600" on>Send</button>
             </div>
         </div>
     )

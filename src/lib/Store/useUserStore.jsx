@@ -1,8 +1,10 @@
 import { doc, getDoc } from "firebase/firestore";
 import { create } from "zustand";
+import { db } from "../firebase";
 
-const useUserStore = create(()=> ({
+const useUserStore = create((set)=> ({
     currentUser: null,
+
     fetchUserInfo: async (uid) => {
         if(!uid) return { currentUser: null }
 

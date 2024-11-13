@@ -13,7 +13,6 @@ function SignUp({ onClick }){
         setIsLoading(true);
 
         const formData = new FormData(e.target);
-        // const data = Object.fromEntries(formData);
         const { firstName, lastName, username, email, password } = Object.fromEntries(formData);
 
         try{
@@ -51,7 +50,6 @@ function SignUp({ onClick }){
         }
     }
 
-    // alert(isLoading)    
     return(
         <div className="SignUp flex items-center gap-[7rem]">
             <div className="ads w-[300px]">

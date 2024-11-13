@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
 import { LoadingContext } from './LoadingContext';
-// import { signInWithCredential } from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../lib/firebase';
 
 function Login({ onClick }){
     const { isLoading, setIsLoading } = useContext(LoadingContext);
@@ -12,7 +12,6 @@ function Login({ onClick }){
         e.preventDefault();
 
         const formData = new FormData(e.target);
-        // const data = Object.fromEntries(formData);
         const { email, password } =  Object.fromEntries(formData);
 
         try{
