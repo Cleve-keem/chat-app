@@ -10,6 +10,7 @@ import avatar from "../../../public/avatar.png";
 import IconList from "../ReuseComp/IconList";
 import { useEffect, useRef, useState } from "react";
 import useUserStore from "../../lib/Store/useUserStore";
+import { auth } from "../../lib/firebase";
 
 const topIcons = [phoneIcon, videoIcon, infoIcon];
 const bottomLeftIcons = [pictureIcon, cameraIcon, micIcon];
@@ -137,7 +138,7 @@ function Chat(){
                         <EmojiPicker open={open} onEmojiClick={handleEmoji}/>
                     </div>
                 </div>
-                <button className="bg-blue-600" on>Send</button>
+                <button className="bg-blue-600">Send</button>
             </div>
         </div>
     )

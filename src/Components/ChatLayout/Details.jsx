@@ -1,3 +1,4 @@
+import { auth } from "../../lib/firebase";
 import useUserStore from "../../lib/Store/useUserStore";
 
 function Details(){
@@ -78,7 +79,7 @@ function Details(){
                     </div>
                 </div>
                 <button className="bg-red-500 bg-opacity-[0.5] mt-2 hover:bg-opacity-80">Block User</button>
-                <button className="w-full bg-blue-600 bg-opacity-[0.5] mt-2 hover:bg-opacity-100">Logout</button>
+                <button className="w-full bg-blue-600 bg-opacity-[0.5] mt-2 hover:bg-opacity-100" onClick={()=>auth.signOut()}>Logout</button>
             </div>
         </div>
     )

@@ -6,7 +6,10 @@ const useUserStore = create((set)=> ({
     currentUser: null,
 
     fetchUserInfo: async (uid) => {
-        if(!uid) return { currentUser: null }
+        if(!uid) {
+            set({ currentUser: null })
+            return;
+        }
 
         const docRef = doc(db, "users", uid);
         const docSnap = await getDoc(docRef);
