@@ -1,17 +1,33 @@
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
 import { LoadingContext } from './LoadingContext';
+// import { signInWithCredential } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 function Login({ onClick }){
     const { isLoading, setIsLoading } = useContext(LoadingContext);
     
-    const handleLogin = (e) => {
-        // setIsLoading(true);
+    const handleLogin = async (e) => {
+        setIsLoading(true);
         e.preventDefault();
-        toast.warn("Wrong Password or Email!", {
-            position: "top-center",
-            theme: "dark",
-        });
+
+        const formData = new FormData(e.target);
+        // const data = Object.fromEntries(formData);
+        const { email, password } =  Object.fromEntries(formData);
+
+        try{
+            await signInWithEmailAndPassword(auth, email, password);
+        }
+        catch(error){
+            toast.warn(error.message, {
+                position: "top-center",
+                theme: "dark",
+            });
+        }
+        finally{
+            setIsLoading(false);
+        }
+        
     }
     
     return(
@@ -25,14 +41,16 @@ function Login({ onClick }){
                 <form className='w-full flex flex-col gap-4' onSubmit={handleLogin}>
                     <div className="inputs flex flex-col gap-3">
                         <input
-                            type="text" 
-                            id="username" 
-                            name="username" 
-                            placeholder="Username"
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="email"
                             />
                         <input type="password" id="password" name="password" placeholder="password"/>
                     </div>
-                    <button type='submit' className="bg-blue-600 w-full">Login</button>
+                    <button type='submit' disabled={isLoading} className={`w-full ${isLoading? "bg-blue-300" : "bg-blue-600"}`}>
+                        {isLoading? "Signing in..." : "Sign in"}
+                    </button>
                 </form>
                 <p>Don't have an account? <span onClick={onClick} className="underline text-blue-700 ml-1 cursor-pointer">Sign Up</span></p>
             </div>

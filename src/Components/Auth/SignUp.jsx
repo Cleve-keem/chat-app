@@ -6,7 +6,7 @@ import { LoadingContext } from './LoadingContext';
 import { useContext } from 'react';
 
 function SignUp({ onClick }){
-    const { isLoading, setIsLoading } = useContext(LoadingContext);
+    const {isLoading, setIsLoading } = useContext(LoadingContext);
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -14,7 +14,7 @@ function SignUp({ onClick }){
 
         const formData = new FormData(e.target);
         // const data = Object.fromEntries(formData);
-        const { firstName, lastName, email, password } = Object.fromEntries(formData);
+        const { firstName, lastName, username, email, password } = Object.fromEntries(formData);
 
         try{
             const res = await createUserWithEmailAndPassword(auth, email, password); // creating an auth user
@@ -23,6 +23,7 @@ function SignUp({ onClick }){
             await setDoc(doc(db, "users", res.user.uid), {
                 firstName,
                 lastName,
+                username,
                 email,
                 password,
                 id: res.user.uid,
@@ -36,16 +37,21 @@ function SignUp({ onClick }){
                 position: "top-center",
                 theme: 'dark'
             });
+
         }
         catch(error){
             console.error(error)
-            toast.error(error.message);
+            toast.error(error.message, {
+                position: 'top-center',
+                theme: 'dark'
+            });
         }
-        // finally{
-        //    
-        // }         
+        finally{
+            setIsLoading(false);
+        }
     }
 
+    // alert(isLoading)    
     return(
         <div className="SignUp flex items-center gap-[7rem]">
             <div className="ads w-[300px]">
@@ -65,10 +71,13 @@ function SignUp({ onClick }){
                             />
                             <input type="text" id="lname" name="lastName" placeholder="Last name"/>
                         </div>
+                        <input type="text" id="usename" name="username" placeholder="Username"/>
                         <input type="email" id="email" name="email" placeholder="Email"/>
                         <input type="password" id="pwd" name="password" placeholder="Password"/>
                     </div>
-                    <button type='submit' disabled={isLoading} className="bg-blue-600 w-full">Sign Up</button>
+                    <button type='submit' disabled={isLoading} className={`w-full ${isLoading? "bg-blue-300" : "bg-blue-600 "}`}>
+                        {isLoading? "Creating account..." : "Sign Up"}
+                    </button>
                 </form>
                 <p>Already have an account? <span onClick={onClick} className="underline text-blue-700 ml-1 cursor-pointer">Login</span></p>
             </div>
