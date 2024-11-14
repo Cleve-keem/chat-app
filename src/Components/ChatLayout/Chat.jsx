@@ -10,7 +10,7 @@ import avatar from "../../../public/avatar.png";
 import IconList from "../ReuseComp/IconList";
 import { useEffect, useRef, useState } from "react";
 import useUserStore from "../../lib/Store/useUserStore";
-import { auth } from "../../lib/firebase";
+// import { auth } from "../../lib/firebase";
 
 const topIcons = [phoneIcon, videoIcon, infoIcon];
 const bottomLeftIcons = [pictureIcon, cameraIcon, micIcon];
