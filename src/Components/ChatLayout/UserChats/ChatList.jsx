@@ -11,32 +11,32 @@ function ChatList(){
 
   const {currentUser} = useUserStore();
 
-  console.log(currentUser)
+  // console.log(currentUser.id)
 
   useEffect(()=>{
     if(!currentUser || !currentUser.id) return;
     
     const unSub = onSnapshot(doc(db, "userchats", currentUser.id), async (res) => {
       const chatList = res.data()?.chats || []; // Ensure chatList is defined
-      
+
       const promises = chatList.map(async (chat) => {
-        const userDocRef = doc(db, "users", chat.id);
+        const userDocRef = doc(db, "users", chat.receiverId);
         const userDocSnap = await getDoc(userDocRef);
   
         const user = userDocSnap.data();
+        console.log(user)
         return { ...chat, user };
 
-      console.log("i reach this side")
-
+        
       });
 
       const chatData = await Promise.all(promises);
 
-      console.log(chatData)
+      // console.log(chatData)
 
-      // setChats((chatData).sort((a,b)=>{
-      //   return b.updatedAt - a.updatedAt;
-      // }));
+      setChats((chatData).sort((a,b)=>{
+        return b.updatedAt - a.updatedAt;
+      }));
 
     });
     return ()=>{
