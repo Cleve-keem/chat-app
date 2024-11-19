@@ -9,9 +9,9 @@ import EmojiPicker from "emoji-picker-react";
 import avatar from "../../../public/avatar.png";
 import IconList from "../ReuseComp/IconList";
 import { useEffect, useRef, useState } from "react";
-// import useUserStore from "../../lib/Store/useUserStore";
+import useUserStore from "../../lib/Store/useUserStore";
 import useChatStore from "../../lib/Store/useChatStore";
-import { doc, onSnapshot } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 
 const topIcons = [phoneIcon, videoIcon, infoIcon];
@@ -23,7 +23,7 @@ function Chat(){
     const [open, setOpen] = useState(false);
     const [value, setvalue] = useState("");
 
-    // const {currentUser} = useUserStore();
+    const {currentUser} = useUserStore();
     const {chatId} = useChatStore();
 
     const endRef = useRef(null);
@@ -37,13 +37,48 @@ function Chat(){
             setChat(res.data())
         });
         return () => unSub();
-    },[chatId])
+    },[chatId.id])
 
     
     const handleEmoji = (e) =>{
         setvalue((state) => state + e.emoji);
         setOpen(false);
     }
+
+    const handleSend = async () => {
+        if (value === "") return;
+
+        try{
+            await updateDoc(doc(db, "chats", chatId), {
+                message:arrayUnion({
+                    senderId: currentUser.id,
+                    value,
+                    createdAt: new Date()
+                })
+            })
+
+            const userChatsRef = doc(db, "userChats", currentUser.id)
+            const userChatsSnapshot = await getDoc(userChatsRef);
+
+            if (userChatsSnapshot.exists()){
+                const userChatsData = userChatsSnapshot.data()
+
+                const chatIndex = userChatsData.chats.findIndex(c => c.chatId === chatId);
+
+                userChatsData[chatIndex].lastMessage = value;
+                userChatsData[chatIndex].isSeen = true;
+                userChatsData[chatIndex].updatedAt = Date.now();
+            }
+
+            // await updateDoc()
+        }
+        catch(error){
+            console.log(error.message)
+        }
+    }
+
+    // console.log(chatId)
+    // console.log("This is the currentUser ", currentUser)
     
     return (
         <div className="chat flex flex-col flex-2 border border-[#36454f]">
@@ -94,7 +129,7 @@ function Chat(){
                         <EmojiPicker open={open} onEmojiClick={handleEmoji}/>
                     </div>
                 </div>
-                <button className="bg-blue-600">Send</button>
+                <button className="bg-blue-600" onClick={handleSend}>Send</button>
             </div>
         </div>
     )
