@@ -93,7 +93,7 @@ function ChatList() {
         ))}
         ;
       </ul>
-      {add ? <AddUser /> : null}
+      {add && <AddUser /> }
     </div>
   );
 }
