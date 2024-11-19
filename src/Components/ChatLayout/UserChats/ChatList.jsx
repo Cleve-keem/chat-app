@@ -1,4 +1,4 @@
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../../../lib/firebase";
 import useUserStore from "../../../lib/Store/useUserStore";
@@ -12,6 +12,9 @@ function ChatList() {
   const { currentUser } = useUserStore();
   const { changeChat } = useChatStore();
 
+  console.log("hello")
+
+
   useEffect(() => {
     if (!currentUser || !currentUser.id) return;
 
@@ -20,7 +23,7 @@ function ChatList() {
       async (res) => {
         const chatList = res.data()?.chats || []; // Ensure chatList is defined
 
-        const promises = chatList.map(async (chat) => {
+        const promises = chatList?.map(async (chat) => {
           const userDocRef = doc(db, "users", chat.receiverId);
           const userDocSnap = await getDoc(userDocRef);
 
@@ -43,10 +46,25 @@ function ChatList() {
     };
   }, [currentUser.id]);
 
-  // console.log("chats", chats)
-
   const handleSelect = async (chat) => {
-    changeChat(chat.chatId, chat.userInfo);
+    const userChats = chats.map((item)=>{
+      const {userInfo, ...rest} = item;
+      return rest
+    });
+    
+    const chatIndex = userChats.findIndex(c=>c.chatId == chat.chatId);
+    userChats[chatIndex].isSeen = true;
+
+    try{
+      await updateDoc(doc(db, "userchats", currentUser.id),{
+        chats: userChats
+      })
+      changeChat(chat.chatId, chat.userInfo);
+    }
+    catch(error){
+      console.log(error.message)
+    }
+
   };
 
   return (
@@ -81,6 +99,7 @@ function ChatList() {
             onClick={() => {
               handleSelect(chat);
             }}
+            style={{backgroundColor: chat?.isSeen ? "transparent" : "bg-blue-600"}}
           >
             <img
               className="border-2 border-white w-12 h-12 rounded-full object-fit"
