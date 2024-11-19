@@ -9,27 +9,39 @@ import EmojiPicker from "emoji-picker-react";
 import avatar from "../../../public/avatar.png";
 import IconList from "../ReuseComp/IconList";
 import { useEffect, useRef, useState } from "react";
-import useUserStore from "../../lib/Store/useUserStore";
-// import { auth } from "../../lib/firebase";
+// import useUserStore from "../../lib/Store/useUserStore";
+import useChatStore from "../../lib/Store/useChatStore";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../lib/firebase";
 
 const topIcons = [phoneIcon, videoIcon, infoIcon];
 const bottomLeftIcons = [pictureIcon, cameraIcon, micIcon];
 const bottomRightIcons = [emoji]
 
 function Chat(){
+    const [chat, setChat] = useState();
     const [open, setOpen] = useState(false);
     const [value, setvalue] = useState("");
 
-    const {currentUser} = useUserStore();
+    // const {currentUser} = useUserStore();
+    const {chatId} = useChatStore();
 
     const endRef = useRef(null);
 
     useEffect(()=>{
-        endRef.current?.scrollIntoView({ behavior: 'smooth' })
+        endRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [])
+
+    useEffect(()=>{
+        const unSub = onSnapshot(doc(db, "chats", chatId.id), (res) => {
+            setChat(res.data())
+        });
+        return () => unSub();
+    },[chatId])
+
     
     const handleEmoji = (e) =>{
-        setvalue((prev) => prev + e.emoji);
+        setvalue((state) => state + e.emoji);
         setOpen(false);
     }
     
@@ -39,8 +51,8 @@ function Chat(){
                 <div className="user flex items-center gap-4">
                     <img className="w-14 rounded-full border-2 border-white object-cover" src="avatar.png" alt="user avatar" />
                     <div className="texts">
-                        <h4>{currentUser.username}</h4>
-                        <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</small>
+                        <h4>{chatId.username}</h4>
+                        <small>Busy...</small>
                     </div>
                 </div>
                 <IconList icons={topIcons} />

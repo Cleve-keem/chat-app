@@ -13,21 +13,16 @@ function AddUser(){
     const formData = new FormData(e.target);
     const username = formData.get("username");
 
-    // console.log(username);
-
     try{
       const userCollection = collection(db, "users"); // going through the collection of all the user in database
       const q = query(userCollection, where("username", "==", username)); // locate the user whose {username == "input name"}
 
       const querySnapshot = await getDocs(q); // collecting the informations
 
-      // console.log(querySnapshot)
-
       if(!querySnapshot.empty){
         const docSnap = querySnapshot.docs[0];
         const userData = docSnap.data()
         setUser(userData);
-        // console.log("User found: ", userData)
       }
       else{
         console.log("No user found with",username)
@@ -36,45 +31,43 @@ function AddUser(){
     catch(error){
       console.log(error)
     }
-
-    // console.log(user)
   }
 
   const handleAdd = async () => {
     const chatRef = collection(db, "chats");
     const userChatsRef = collection(db, "userchats");
 
-    
     try{
       const newChatRef = doc(chatRef);
 
+      // CREATING TWO DOCUMENT IN THE CHATS COLLECTION
       await setDoc(newChatRef, {
-        lastMessage: serverTimestamp(),
-        message: []
-      })
+        createdAt: serverTimestamp(), // First Doc
+        message: [],                  // Second Doc
+      });
 
-      await updateDoc(doc(userChatsRef, user.id), {
+    // PUSHING FIVE DOCUMENT IN THE USERNAME CHATS ARRAY!
+      await updateDoc(doc(userChatsRef, user.id), { // Stored in the user doc to track the currentUser.
         chats:arrayUnion({
           chatId: newChatRef.id,
-          lastMessage: "",
-          receiverId: currentUser.id,
+          lastMessage: " ",
+          receiverId: currentUser.id, // Here is to keep track of the user receiving the message.
+          updatedAt: Date.now()
+        })
+      });
+
+      // PUSHING SAME FIVE DOCUMENT TO THE CURRENT-USER CHATS ARRAY!
+      await updateDoc(doc(userChatsRef, currentUser.id), { // Stored in the current user doc to track the user
+        chats:arrayUnion({
+          chatId: newChatRef.id,
+          lastMessage: " ",
+          receiverId: user.id, // Here is to keep track of the sender Id to receiving the message.
           updatedAt: Date.now()
         })
       })
-      await updateDoc(doc(userChatsRef, currentUser.id), {
-        chats:arrayUnion({
-          chatId: newChatRef.id,
-          lastMessage: "",
-          receiverId: user.id,
-          updatedAt: Date.now()
-        })
-      })
-
-      console.log(newChatRef.id)
     }catch(error){
       console.log(error.message);
     }
-
   }
 
   return (

@@ -1,8 +1,11 @@
 import { auth } from "../../lib/firebase";
 import useUserStore from "../../lib/Store/useUserStore";
+import useChatStore from "../../lib/Store/useChatStore";
 
 function Details(){
-    const {currentUser} = useUserStore();
+    // const {currentUser} = useUserStore();
+    const {chatId} = useChatStore();
+
     return(
         <div className="details flex-1 flex flex-col overflow-y-scroll no-scrollbar">
             <div 
@@ -14,7 +17,7 @@ function Details(){
                 border-b-2 sticky top-0 z-10 bg-slate-900"
             >
                 <img className="w-24 border border-white rounded-full" src="avatar.png" alt="" />
-                <h2 className="text-xl">{currentUser.username}</h2>
+                <h2 className="text-xl">{chatId.username}</h2>
                 <p>Lorem ipsum dolor</p>
             </div>
             <div className="userInfo p-4 flex flex-col gap-3">
