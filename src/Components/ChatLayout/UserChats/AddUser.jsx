@@ -50,6 +50,7 @@ function AddUser(){
       await updateDoc(doc(userChatsRef, user.id), { // Stored in the user doc to track the currentUser.
         chats:arrayUnion({
           chatId: newChatRef.id,
+          // isSeen: false,
           lastMessage: " ",
           receiverId: currentUser.id, // Here is to keep track of the user receiving the message.
           updatedAt: Date.now()
@@ -60,6 +61,7 @@ function AddUser(){
       await updateDoc(doc(userChatsRef, currentUser.id), { // Stored in the current user doc to track the user
         chats:arrayUnion({
           chatId: newChatRef.id,
+          // isSeen: false,
           lastMessage: " ",
           receiverId: user.id, // Here is to keep track of the sender Id to receiving the message.
           updatedAt: Date.now()

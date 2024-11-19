@@ -24,8 +24,8 @@ function ChatList() {
           const userDocRef = doc(db, "users", chat.receiverId);
           const userDocSnap = await getDoc(userDocRef);
 
-          const user = userDocSnap.data();
-          return { ...chat, user };
+          const userInfo = userDocSnap.data();
+          return { ...chat, userInfo };
         });
 
         const chatData = await Promise.all(promises);
@@ -43,8 +43,10 @@ function ChatList() {
     };
   }, [currentUser.id]);
 
+  // console.log("chats", chats)
+
   const handleSelect = async (chat) => {
-    changeChat(chat.chatId, chat.user);
+    changeChat(chat.chatId, chat.userInfo);
   };
 
   return (
@@ -86,7 +88,7 @@ function ChatList() {
               alt="user profile"
             />
             <div className="texts flex flex-col">
-              <span className="text-[14px]">{chat.user.username}</span>
+              <span className="text-[14px]">{chat.userInfo.username}</span>
               <p className="text-[11px] text-[#e5e4e2]">{chat.lastMessage}</p>
             </div>
           </li>

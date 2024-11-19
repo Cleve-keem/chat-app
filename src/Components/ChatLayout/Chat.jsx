@@ -21,10 +21,10 @@ const bottomRightIcons = [emoji]
 function Chat(){
     const [chat, setChat] = useState();
     const [open, setOpen] = useState(false);
-    const [value, setvalue] = useState("");
+    const [text, setText] = useState("");
 
     const {currentUser} = useUserStore();
-    const {chatId} = useChatStore();
+    const {chatId, userInfo} = useChatStore();
 
     const endRef = useRef(null);
 
@@ -33,7 +33,7 @@ function Chat(){
     }, [])
 
     useEffect(()=>{
-        const unSub = onSnapshot(doc(db, "chats", chatId.id), (res) => {
+        const unSub = onSnapshot(doc(db, "chats", chatId), (res) => {
             setChat(res.data())
         });
         return () => unSub();
@@ -46,38 +46,49 @@ function Chat(){
     }
 
     const handleSend = async () => {
-        if (value === "") return;
+        if (text === "") return;
 
         try{
             await updateDoc(doc(db, "chats", chatId), {
                 message:arrayUnion({
                     senderId: currentUser.id,
-                    value,
+                    text,
                     createdAt: new Date()
                 })
             })
 
-            const userChatsRef = doc(db, "userChats", currentUser.id)
-            const userChatsSnapshot = await getDoc(userChatsRef);
+            // TRACKING THE LAST_MESSAGE
+            const userIDs = [currentUser.id, userInfo.id];
 
-            if (userChatsSnapshot.exists()){
-                const userChatsData = userChatsSnapshot.data()
+            userIDs.forEach(async (id) => {
+                const userChatsRef = doc(db, "userchats", id) // LOCATING USERCHATS DOCUMENT
+                const userChatsSnapshot = await getDoc(userChatsRef);
+    
+                if (userChatsSnapshot.exists()){
+                    const userChatsData = userChatsSnapshot.data()
+    
+                    const chatIndex = userChatsData.chats.findIndex(item => item.chatId === chatId);
+    
+                    userChatsData.chats[chatIndex].lastMessage = text;
+                    userChatsData.chats[chatIndex].isSeen = id === currentUser.id ? true : false;
+                    userChatsData.chats[chatIndex].updatedAt = Date.now();
+    
+                    await updateDoc(userChatsRef, {
+                        chats:userChatsData.chats
+                    }) 
+                }
+            });
 
-                const chatIndex = userChatsData.chats.findIndex(c => c.chatId === chatId);
-
-                userChatsData[chatIndex].lastMessage = value;
-                userChatsData[chatIndex].isSeen = true;
-                userChatsData[chatIndex].updatedAt = Date.now();
-            }
 
             // await updateDoc()
         }
         catch(error){
             console.log(error.message)
         }
+
     }
 
-    // console.log(chatId)
+    console.log("chatId",chatId)
     // console.log("This is the currentUser ", currentUser)
     
     return (
@@ -86,7 +97,7 @@ function Chat(){
                 <div className="user flex items-center gap-4">
                     <img className="w-14 rounded-full border-2 border-white object-cover" src="avatar.png" alt="user avatar" />
                     <div className="texts">
-                        <h4>{chatId.username}</h4>
+                        <h4>{userInfo.username}</h4>
                         <small>Busy...</small>
                     </div>
                 </div>
@@ -96,10 +107,10 @@ function Chat(){
             {/* The cneter section of the chat */}
             <div className="center p-4 flex flex-col overflow-y-scroll no-scrollbar gap-3">
                 {chat?.message?.map((message) => (
-                    <div className="message max-w-[70%] flex gap-2" key={message.createdAt}>
-                        <img className="w-10 h-10 rounded-full object-cover border border-white" src={avatar} alt="avatar" />
+                    <div className="message own max-w-[70%] flex gap-2" key={message.createdAt}>
+                        {/* <img className="w-10 h-10 rounded-full object-cover border border-white" src={avatar} alt="avatar" /> */}
                         <div className="texts">
-                            <img src={message.img} alt="img" />
+                            {message.img && <img src={message.img} alt="img" />}
                             <p className="bg-slate-500 p-3 rounded-[10px]">{message.text}</p>
                             {/* <span>1 mins ago</span> */}
                         </div>
@@ -113,8 +124,8 @@ function Chat(){
                 <IconList icons={bottomLeftIcons} />
                 <input 
                     type="text"
-                    value={value}
-                    onChange={(e)=>setvalue(e.target.value)}
+                    value={text}
+                    onChange={(e)=>setText(e.target.value)}
                     className="flex-1 bg-[#36454f] border-none outline-none text-white p-2 rounded-[5px]"
                     placeholder="Type a message..." 
                 />
