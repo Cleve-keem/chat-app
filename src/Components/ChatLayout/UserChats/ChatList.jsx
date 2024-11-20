@@ -12,9 +12,6 @@ function ChatList() {
   const { currentUser } = useUserStore();
   const { changeChat } = useChatStore();
 
-  console.log("hello")
-
-
   useEffect(() => {
     if (!currentUser || !currentUser.id) return;
 
@@ -23,12 +20,14 @@ function ChatList() {
       async (res) => {
         const chatList = res.data()?.chats || []; // Ensure chatList is defined
 
-        const promises = chatList?.map(async (chat) => {
+        // console.log(chatList)
+
+        const promises = chatList.map(async (chat) => {
           const userDocRef = doc(db, "users", chat.receiverId);
           const userDocSnap = await getDoc(userDocRef);
+          const user = userDocSnap.data();
 
-          const userInfo = userDocSnap.data();
-          return { ...chat, userInfo };
+          return { ...chat, user };
         });
 
         const chatData = await Promise.all(promises);
@@ -46,25 +45,26 @@ function ChatList() {
     };
   }, [currentUser.id]);
 
+  console.log("chats", chats)
+
   const handleSelect = async (chat) => {
-    const userChats = chats.map((item)=>{
-      const {userInfo, ...rest} = item;
+    const userChats = chats.map((item)=> {
+      const {user, ...rest} = item;
       return rest
-    });
+    })
+
+    const chatIndex = userChats.findIndex(c=>c.chatId === chat.chatId)
     
-    const chatIndex = userChats.findIndex(c=>c.chatId == chat.chatId);
-    userChats[chatIndex].isSeen = true;
 
     try{
-      await updateDoc(doc(db, "userchats", currentUser.id),{
-        chats: userChats
+      const userChatsRef = doc(db, "userchats", currentUser.id);
+      await updateDoc(userChatsRef, {
+
       })
-      changeChat(chat.chatId, chat.userInfo);
-    }
-    catch(error){
+    }catch(error){
       console.log(error.message)
     }
-
+    changeChat(chat.chatId, chat.user);
   };
 
   return (
@@ -99,7 +99,7 @@ function ChatList() {
             onClick={() => {
               handleSelect(chat);
             }}
-            style={{backgroundColor: chat?.isSeen ? "transparent" : "bg-blue-600"}}
+            style={{backgroundColor: chat?.isSeen ? "transparent":"bg-blue-600"}}
           >
             <img
               className="border-2 border-white w-12 h-12 rounded-full object-fit"
@@ -107,7 +107,7 @@ function ChatList() {
               alt="user profile"
             />
             <div className="texts flex flex-col">
-              <span className="text-[14px]">{chat.userInfo.username}</span>
+              <span className="text-[14px]">{chat.user.username}</span>
               <p className="text-[11px] text-[#e5e4e2]">{chat.lastMessage}</p>
             </div>
           </li>

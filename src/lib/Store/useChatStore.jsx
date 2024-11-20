@@ -7,11 +7,11 @@ const useChatStore = create((set) => ({
     isCurrentUserBlocked: false,
     isReceiverBlocked: false,
 
-    changeChat: (chatId, userInfo)=>{
+    changeChat: (chatId, user)=>{
         const currentUser = useUserStore.getState().currentUser;
 
-        if(!currentUser || !userInfo){
-            console.log("Invalid currentUser or user: ", {currentUser, userInfo});
+        if(!currentUser || !user){
+            console.log("Invalid currentUser or user: ", {currentUser, user});
             return set({
                 chatId: null,
                 user: null ,
@@ -20,8 +20,8 @@ const useChatStore = create((set) => ({
             })
         }
 
-        const isBlockedByUser = Array.isArray(userInfo?.blocked) && userInfo.blocked.includes(currentUser.id);
-        const hasBlockedUser = Array.isArray(currentUser?.blocked) && currentUser.blocked.includes(userInfo.id);
+        const isBlockedByUser = Array.isArray(user?.blocked) && user.blocked.includes(currentUser.id);
+        const hasBlockedUser = Array.isArray(currentUser?.blocked) && currentUser.blocked.includes(user.id);
     
         // check if current user is blocked
         if(isBlockedByUser){
@@ -45,7 +45,7 @@ const useChatStore = create((set) => ({
         else{
             return set({
                 chatId,
-                userInfo,
+                user,
                 isCurrentUserBlocked: false,
                 isReceiverBlocked: true,
             })

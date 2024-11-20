@@ -30,7 +30,7 @@ function Chat() {
   const [text, setText] = useState("");
 
   const { currentUser } = useUserStore();
-  const { chatId, userInfo } = useChatStore();
+  const { chatId, user } = useChatStore();
 
   const endRef = useRef(null);
 
@@ -63,47 +63,31 @@ function Chat() {
       });
 
       // TRACKING THE LAST_MESSAGE
-      const userIDs = [currentUser.id, userInfo.id];
+      const userIDs = [currentUser.id, user.id];
 
       userIDs.forEach(async (id) => {
         const userChatsRef = doc(db, "userchats", id); // LOCATING USERCHATS DOCUMENT
         const userChatsSnapshot = await getDoc(userChatsRef);
 
         if (userChatsSnapshot.exists()) {
-            const userChatsData = userChatsSnapshot.data();
-        
-            const chatIndex = userChatsData.chats.findIndex(
-              (item) => item.id === id
-            );
+          const userChatsData = userChatsSnapshot.data();
 
-            if (chatIndex !== -1) {
-                // If the chat exists, update it
-                userChatsData.chats[chatIndex].lastMessage = text;
-                userChatsData.chats[chatIndex].isSeen =
-                id === currentUser.id ? true : false;
-                userChatsData.chats[chatIndex].updatedAt = Date.now();
-        
-                await updateDoc(userChatsRef, {
-                chats: userChatsData.chats,
-                });
-            } 
-            else {
-                // If the chat doesn't exist, add a new one
-                const newChat = {
-                chatId,
-                lastMessage: text,
-                isSeen: id === currentUser.id ? true : false,
-                updatedAt: Date.now(),
-                };
-        
-                await updateDoc(userChatsRef, {
-                chats: arrayUnion(newChat),
-                });
-            }
-            console.log("ID",id)
+          const chatIndex = userChatsData.chats.findIndex(
+            (item) => item.chatId === chatId
+          );
+
+          userChatsData.chats[chatIndex].lastMessage = text;
+          userChatsData.chats[chatIndex].isSeen =
+            id === currentUser.id ? true : false;
+          userChatsData.chats[chatIndex].updatedAt = Date.now();
+
+          await updateDoc(userChatsRef, {
+            chats: userChatsData.chats,
+          });
         }
       });
 
+      // await updateDoc()
     } catch (error) {
       console.log(error.message);
     }
@@ -122,7 +106,7 @@ function Chat() {
             alt="user avatar"
           />
           <div className="texts">
-            <h4>{userInfo.username}</h4>
+            <h4>{user.username}</h4>
             <small>Busy...</small>
           </div>
         </div>
