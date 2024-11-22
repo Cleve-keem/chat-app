@@ -45,26 +45,24 @@ function ChatList() {
     };
   }, [currentUser.id]);
 
-  console.log("chats", chats)
-
   const handleSelect = async (chat) => {
     const userChats = chats.map((item)=> {
       const {user, ...rest} = item;
       return rest
     })
 
-    const chatIndex = userChats.findIndex(c=>c.chatId === chat.chatId)
+    const chatIndex = userChats.findIndex(c=>c.chatId === chat.chatId);
+    userChats[chatIndex].isSeen = true;
     
-
+    const userChatsRef = doc(db, "userchats", currentUser.id);
     try{
-      const userChatsRef = doc(db, "userchats", currentUser.id);
       await updateDoc(userChatsRef, {
-
+        chats: userChats,
       })
+      changeChat(chat.chatId, chat.user);
     }catch(error){
       console.log(error.message)
     }
-    changeChat(chat.chatId, chat.user);
   };
 
   return (
@@ -95,11 +93,11 @@ function ChatList() {
         {chats?.map((chat) => (
           <li
             key={chat.chatId}
-            className="chatInfo flex flex-1 items-center p-4 gap-2 border-[#36454f] border-b-2"
+            className={`chatInfo flex flex-1 items-center p-4 gap-2 border-[#36454f] border-b-2 ${chat.isSeen ? "bg-transparent" : "bg-blue-600"}`}
             onClick={() => {
               handleSelect(chat);
             }}
-            style={{backgroundColor: chat?.isSeen ? "transparent":"bg-blue-600"}}
+            // style={{backgroundColor: chat?.isSeen ? "transparent":"blue"}}
           >
             <img
               className="border-2 border-white w-12 h-12 rounded-full object-fit"

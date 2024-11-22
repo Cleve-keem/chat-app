@@ -1,10 +1,25 @@
-import { auth } from "../../lib/firebase";
+import { auth, db } from "../../lib/firebase";
 import useUserStore from "../../lib/Store/useUserStore";
 import useChatStore from "../../lib/Store/useChatStore";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 function Details(){
     const {currentUser} = useUserStore();
-    // const {chatId, userInfo} = useChatStore();
+    const {chatId, user, changeBlock} = useChatStore();
+
+    const handleBlock = async () => {
+        if(!user) return;
+
+        try{
+            const userBlackedRef = doc(db, "users", currentUser.id);
+            await updateDoc(userBlackedRef, {
+                block: isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
+            })
+            changeBlock();
+        }catch(error){
+
+        }
+    }
 
     return(
         <div className="details flex-1 flex flex-col overflow-y-scroll no-scrollbar">
@@ -81,7 +96,7 @@ function Details(){
                         <img className="w-6 p-1.5 bg-[#36454f] rounded-full" src="arrowUp.png" alt="arrow icon" />
                     </div>
                 </div>
-                <button className="bg-red-500 bg-opacity-[0.5] mt-2 hover:bg-opacity-80">Block User</button>
+                <button className="bg-red-500 bg-opacity-[0.5] mt-2 hover:bg-opacity-80">Block {user.username}</button>
                 <button className="w-full bg-blue-600 bg-opacity-[0.5] mt-2 hover:bg-opacity-100" onClick={()=>auth.signOut()}>Logout</button>
             </div>
         </div>

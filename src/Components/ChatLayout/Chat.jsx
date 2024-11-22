@@ -43,7 +43,9 @@ function Chat() {
       setChat(res.data());
     });
     return () => unSub();
-  }, [chatId.id]);
+  }, [chatId]);
+
+  // console.log(chatId)
 
   const handleEmoji = (e) => {
     setvalue((state) => state + e.emoji);
@@ -117,7 +119,7 @@ function Chat() {
       <div className="center p-4 flex flex-col overflow-y-scroll no-scrollbar gap-3">
         {chat?.message?.map((message) => (
           <div
-            className="message own max-w-[70%] flex gap-2"
+            className={`max-w-[70%] flex gap-2 ${message.senderId === currentUser.id ? "message own" : "message"}`}
             key={message.createdAt}
           >
             {/* <img className="w-10 h-10 rounded-full object-cover border border-white" src={avatar} alt="avatar" /> */}
